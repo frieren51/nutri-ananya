@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "593607796395",
+    "firebase_url": "https://nutrishield-bba5a-default-rtdb.firebaseio.com",
+    "project_id": "nutrishield-bba5a",
+    "storage_bucket": "nutrishield-bba5a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:593607796395:android:51cd567e98c46a40ecf9ee",
+        "android_client_info": {
+          "package_name": "com.example.nutrishield"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcJsMe12RhM9H7WGFgc08TZG4Q-d6cv3w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:593607796395:android:f82c32c08306bc95ecf9ee",
+        "android_client_info": {
+          "package_name": "com.example.nutrishield1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcJsMe12RhM9H7WGFgc08TZG4Q-d6cv3w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

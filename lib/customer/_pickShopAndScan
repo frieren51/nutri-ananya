@@ -1,0 +1,103 @@
+import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
+import '../models/shop_model.dart';
+import 'scan_result_page.dart';
+
+Future<void> _pickShopAndScan() async {
+  final DatabaseReference db = FirebaseDatabase.instance.ref();
+
+  // 1. Fetch shops from Firebase
+  final snapshot = await db.child('shops').get();
+
+  if (!snapshot.exists) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("No shops found in database.")),
+      );
+    }
+    return;
+  }
+
+  // 2. Parse data into a list of ShopModel
+  final Map<dynamic, dynamic> shopsMap =
+      snapshot.value as Map<dynamic, dynamic>;
+
+  List<ShopModel> shopsList = [];
+
+  shopsMap.forEach((key, value) {
+    shopsList.add(ShopModel.fromMap(value, key));
+  });
+
+  // 3. Show the Shop Picker (Modal Bottom Sheet)
+  if (!mounted) return;
+
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: const Color(0xFFF7F1EA),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+    ),
+    builder: (context) {
+      return SizedBox(
+        height: 400,
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              const Text(
+                "Select the Shop",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 15),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: shopsList.length,
+                  itemBuilder: (context, index) {
+                    final shop = shopsList[index];
+                    return Card(
+                      elevation: 0,
+                      color: Colors.white,
+                      margin: const EdgeInsets.only(bottom: 10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ListTile(
+                        leading: const Icon(
+                          Icons.store,
+                          color: Color(0xFF4A5D3A),
+                        ),
+                        title: Text(
+                          shop.shopName,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                          shop.shopAddress,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        trailing: const Icon(
+                          Icons.arrow_forward_ios,
+                          size: 14,
+                        ),
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  ScanResultPage(selectedShop: shop),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
